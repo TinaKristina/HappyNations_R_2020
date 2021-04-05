@@ -1,0 +1,171 @@
+---
+title: "happy_2020"
+author: "Kristina Z."
+date: "4/5/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Gallup Happiness World Report for 2020
+
+## Read dataset
+
+
+```{r}
+hw20 <- read.csv("2020.csv")
+```
+
+## Main feats
+
+```{r}
+head(hw20)
+```
+```{r}
+colnames(hw20)
+```
+
+
+```{r}
+library('dplyr') 
+library('tidyverse') 
+library('ggplot2')
+```
+
+
+```{r}
+dim(hw20)
+```
+
+
+```{r}
+hw20 <- hw20[, -c(2,4,5,6,13,14,15,16,17,18,19,20)]
+```
+
+
+```{r}
+hw20 <- hw20 %>% rename(c("Country" = "ï..Country.name" ,
+                      "Score" = "Ladder.score",
+                      "GDP" = "Logged.GDP.per.capita", 
+                      "Family" = "Social.support",
+                      "Health" = "Healthy.life.expectancy", 
+                      "Freedom" = "Freedom.to.make.life.choices",
+                      "Corruption" = "Perceptions.of.corruption"))
+```
+
+
+```{r}
+colnames(hw20)
+```
+
+
+```{r}
+hw20 <- data.frame(hw20)
+```
+
+
+```{r}
+head(hw20)
+```
+
+
+```{r}
+colnames(hw20)
+```
+```{r}
+summary(hw20)
+```
+
+
+```{r}
+hw20 <- hw20 %>% mutate(Rank = row_number())
+hw20
+
+```
+```{r}
+head(hw20)
+```
+
+
+```{r}
+colnames(hw20)
+```
+
+
+
+```{r}
+hw20<-hw20[,c(9,1,2,3,4,5,6,7,8)] 
+colnames(hw20)
+```
+
+
+```{r}
+head(hw20)
+
+```
+```{r}
+tail(hw20)
+```
+
+
+```{r}
+
+sum(is.na(hw20$Corruption))
+sum(is.na(hw20))
+
+
+
+hw20$Country <- as.numeric(as.factor(hw20$Country))
+
+str(hw20)
+
+
+```
+
+
+
+
+
+
+```{r}
+library(rpart) 
+str(hw20)
+
+# import libraries za vizuelizaciju da bi videli korelacije izmedju varijabli
+
+library(ggplot2) 
+library(ggthemes) 
+num.cols <- sapply(hw20,is.numeric) 
+cor.data <- cor(hw20[,num.cols]) 
+print(cor.data)
+
+#cor <- cor(hw20[sapply(hw20, function(x) !is.factor(x))]) 
+
+cor <- cor(hw20)
+
+str(hw20)
+colnames(hw20)
+head(hw20) 
+summary(hw20)
+```
+
+
+```{r}
+
+library(corrgram) 
+library(corrplot)
+
+print(corrplot(cor.data, method = 'color')) 
+corrgram(hw20)
+
+help("corrgram") 
+corrgram(hw20, order = TRUE, lower.panel = panel.shade, upper.panel = panel.pie, text.panel = panel.txt)
+ggplot(hw20,aes(x=Score)) + geom_histogram(bins =
+20,alpha=0.5,fill='blue') 
+ggplot(hw20,aes(x=GDP)) + geom_histogram(bins = 20,alpha=0.5,fill='blue')
+
+
+```
+
